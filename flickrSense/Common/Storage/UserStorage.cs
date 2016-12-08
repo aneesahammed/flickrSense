@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+ * @file:UserStorage
+ * @brief: Log helper class
+ * @author: AA 
+ * @credit: AppStudio
+ */
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;

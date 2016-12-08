@@ -1,4 +1,9 @@
-﻿using System;
+﻿/*
+ * @file:MapInfo
+ * @brief: Message class to pass selected photo's location details from ViewModel to View
+ * @author:AA 
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

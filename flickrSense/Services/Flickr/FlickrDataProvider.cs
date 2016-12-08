@@ -1,4 +1,9 @@
-﻿using Microsoft.Toolkit.Uwp;
+﻿/*
+ * @file:FlickrDataProvider
+ * @brief:  Data Provider for connecting to Flickr service.
+ * @author:AA 
+ */
+using Microsoft.Toolkit.Uwp;
 using Microsoft.Toolkit.Uwp.Services;
 using Microsoft.Toolkit.Uwp.Services.Exceptions;
 using flickrSense.Models;

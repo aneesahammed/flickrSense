@@ -1,8 +1,11 @@
-﻿using System;
+﻿/*
+ * @file:AppLogs
+ * @brief: Log helper class
+ * @author: AA 
+ * @credit: AppStudio
+ */
+using System;
 using System.Threading.Tasks;
-using Windows.Storage;
-using System.IO;
-using System.Collections.Generic;
 
 namespace flickrSense.Common.Storage
 {

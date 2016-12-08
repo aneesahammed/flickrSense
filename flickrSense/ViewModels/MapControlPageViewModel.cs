@@ -1,4 +1,9 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿/*
+ * @file:MapControlPageViewModel
+ * @brief: ViewModel for Map Control Page
+ * @author:AA 
+ */
+using GalaSoft.MvvmLight.Messaging;
 using flickrSense.Common.Storage;
 using flickrSense.Models;
 using System;
@@ -45,7 +50,7 @@ namespace flickrSense.ViewModels
                     BasicGeoposition snPosition = new BasicGeoposition() { Latitude = photo.Latitude, Longitude = photo.Longitude+ _testCounter++ };
                     Geopoint snPoint = new Geopoint(snPosition);
 
-                    Messenger.Default.Send<MapInfo>(new MapInfo() { SnPoint=snPoint,Title=photo.Title});
+                    Messenger.Default.Send(new MapInfo { SnPoint=snPoint,Title=photo.Title});
                 }
 
                 await Task.CompletedTask;

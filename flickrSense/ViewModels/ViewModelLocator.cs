@@ -1,9 +1,15 @@
-﻿using GalaSoft.MvvmLight.Ioc;
-using Microsoft.Practices.ServiceLocation;
-using flickrSense.Services.Flickr;
-using flickrSense.ViewModels;
+﻿/*
+ * @file:ViewModelLocator
+ * @brief: This class contains static references to all the view models in the 
+ * application and provides an entry point for the bindings.
+ * @author: AA
+ * @credit: MVVMLight
+ */
 
-namespace flickrSense
+using GalaSoft.MvvmLight.Ioc;
+using Microsoft.Practices.ServiceLocation;
+
+namespace flickrSense.ViewModels
 {
     public class ViewModelLocator
     {

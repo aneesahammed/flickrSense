@@ -1,4 +1,9 @@
-﻿namespace flickrSense.Services.Flickr
+﻿/*
+ * @file:FlickrDataConfig
+ * @brief:  Query string configuration.
+ * @author:AA 
+ */
+namespace flickrSense.Services.Flickr
 {
     /// <summary>
     /// Query string configuration.

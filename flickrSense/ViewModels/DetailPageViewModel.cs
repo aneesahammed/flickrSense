@@ -1,3 +1,8 @@
+/*
+ * @file:DetailPageViewModel
+ * @brief: ViewModel for Detail Page (Pivot)
+ * @author:AA 
+ */
 using GalaSoft.MvvmLight.Command;
 using flickrSense.Common;
 using flickrSense.Common.Storage;
@@ -17,7 +22,7 @@ namespace flickrSense.ViewModels
     {
 
         #region <-PrivateMembers->
-        private object _locker = new object();
+        private readonly object _locker = new object();
         #endregion
 
         #region <-Properties->
@@ -61,7 +66,6 @@ namespace flickrSense.ViewModels
             }
         }
 
-        private bool _isLocationInfoAvailable=false;
         public bool IsLocationInfoAvailable
         {
             get
@@ -73,17 +77,17 @@ namespace flickrSense.ViewModels
 
                 if (_selectedPhoto != null)
                 {
-                    var condition = _isLocationInfoAvailable = ((_selectedPhoto.Latitude != 0) && (_selectedPhoto.Longitude != 0));
+                    var condition = (_selectedPhoto.Latitude != 0) && (_selectedPhoto.Longitude != 0);
+
                     if (condition)
                         System.Diagnostics.Debug.WriteLine("Location found---");
+
                     return condition;
                 }
-                else
-                    return _isLocationInfoAvailable = false;
+                return false;
             }
             set
             {
-                _isLocationInfoAvailable = value;
                 RaisePropertyChanged();
             }
         }
@@ -135,23 +139,24 @@ namespace flickrSense.ViewModels
             {
                 lock (_locker)
                 {
-                    if (parameter is PhotoNavParameter)
+                    var param = parameter as PhotoNavParameter;
+                    if (param != null)
                     {
-                        PhotoNavParameter photoNavParam = parameter as PhotoNavParameter;
-                        if(photoNavParam!=null)
+                        PhotoNavParameter photoNavParam = param;
+                        PhotoCollection = new ObservableCollection<Photo>(photoNavParam.Photos);
+
+                        if (!PhotoCollection.IsEmpty())
                         {
-                            PhotoCollection.Clear();
-                            PhotoCollection = new ObservableCollection<Photo>(photoNavParam.Photos);
+                            var strIndex = (suspensionState.ContainsKey(nameof(SelectedPhotoIndex))) ? 
+                                suspensionState[nameof(SelectedPhotoIndex)]?.ToString() : null;
 
-                            if (!PhotoCollection.IsEmpty())
-                            {
-                                var index = photoNavParam.Index;
+                            int index;
+                            index = string.IsNullOrEmpty(strIndex) ? photoNavParam.Index : Convert.ToInt32(strIndex);
 
-                                System.Diagnostics.Debug.WriteLine("PhotoCollection Count--> {0}", photoNavParam.Photos.Count);
-                                System.Diagnostics.Debug.WriteLine("photoNavParam.Index--> {0}", photoNavParam.Index);
+                            System.Diagnostics.Debug.WriteLine("PhotoCollection Count--> {0}", photoNavParam.Photos.Count);
+                            System.Diagnostics.Debug.WriteLine("photoNavParam.Index--> {0}", index);
 
-                                SelectedPhotoIndex = index;
-                            }                     
+                            SelectedPhotoIndex = index;
                         }
                     }
                 }
@@ -170,8 +175,10 @@ namespace flickrSense.ViewModels
             {
                 if (suspending)
                 {
-                    suspensionState[nameof(Value)] = Value;                    
+                    suspensionState[nameof(Value)] = Value;
                 }
+
+                suspensionState[nameof(SelectedPhotoIndex)] = SelectedPhotoIndex;
                 await Task.CompletedTask;
             }
             catch (Exception ex)

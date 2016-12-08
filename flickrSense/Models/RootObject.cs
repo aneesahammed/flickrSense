@@ -1,4 +1,9 @@
-﻿using System;
+﻿/*
+ * @file:RootObject
+ * @brief: Strongly types Flickr Root object.
+ * @author:AA 
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

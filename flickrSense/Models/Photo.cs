@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿/*
+ * @file:Photo
+ * @brief: Strongly types Flickr Photo object.
+ * @author:AA 
+ */
+using System.Collections.Generic;
 using flickrSense.Common;
 using Microsoft.Toolkit.Uwp.Services;
 using Windows.Devices.Geolocation;
@@ -38,7 +43,7 @@ namespace flickrSense.Models
             }
         }
 
-        public string MediumPath
+        public string MediumThumbnailSizePath
         {
             get
             {

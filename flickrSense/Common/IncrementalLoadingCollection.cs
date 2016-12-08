@@ -11,9 +11,9 @@ namespace UwpHelpers.Controls.Common
     public class IncrementalLoadingCollection<T> : ObservableCollection<T>, ISupportIncrementalLoading
     {
         private readonly Func<CancellationToken, uint, Task<ObservableCollection<T>>> func;
-        private uint maxItems;
-        private bool isInfinite;
-        private CancellationToken token;
+        private uint _maxItems;
+        private bool _isInfinite;
+        private CancellationToken _token;
 
         /// <summary>
         /// Infinite, incremental scrolling list supported by ListView and GridView
@@ -34,12 +34,12 @@ namespace UwpHelpers.Controls.Common
             this.func = func;
             if (maxItems == 0) //Infinite
             {
-                isInfinite = true;
+                _isInfinite = true;
             }
             else
             {
-                this.maxItems = maxItems;
-                isInfinite = false;
+                this._maxItems = maxItems;
+                _isInfinite = false;
             }
         }
 
@@ -47,13 +47,13 @@ namespace UwpHelpers.Controls.Common
         {
             get
             {
-                if (this.token.IsCancellationRequested)
+                if (this._token.IsCancellationRequested)
                     return false;
 
-                if (isInfinite)
+                if (_isInfinite)
                     return true;
 
-                return this.Count < maxItems;
+                return this.Count < _maxItems;
             }
         }
 
@@ -65,19 +65,19 @@ namespace UwpHelpers.Controls.Common
         private async Task<LoadMoreItemsResult> InternalLoadMoreItemsAsync(CancellationToken passedToken, uint count)
         {
             ObservableCollection<T> tempList = null;
-            this.token = passedToken;
+            this._token = passedToken;
             var baseIndex = this.Count;
             uint numberOfItemsToGet = 0;
 
-            if (!isInfinite)
+            if (!_isInfinite)
             {
-                if (baseIndex + count < maxItems)
+                if (baseIndex + count < _maxItems)
                 {
                     numberOfItemsToGet = count;
                 }
                 else
                 {
-                    numberOfItemsToGet = maxItems - (uint) (baseIndex);
+                    numberOfItemsToGet = _maxItems - (uint) (baseIndex);
                 }
             }
             else
@@ -89,8 +89,8 @@ namespace UwpHelpers.Controls.Common
 
             if (tempList.Count == 0) //no more items, stop the incremental loading 
             {
-                maxItems = (uint) this.Count;
-                isInfinite = false;
+                _maxItems = (uint) this.Count;
+                _isInfinite = false;
             }
             else
             {

@@ -1,4 +1,9 @@
-﻿using System;
+﻿/*
+ * @file:PhotoNavParameter
+ * @brief:Class to pass selected photo info to Detail page.
+ * @author:AA 
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

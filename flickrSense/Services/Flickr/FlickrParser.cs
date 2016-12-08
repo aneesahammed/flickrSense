@@ -1,4 +1,9 @@
-﻿using Microsoft.Toolkit.Uwp.Services;
+﻿/*
+ * @file:FlickrParser
+ * @brief: Parse Flickr results into strong type.
+ * @author:AA 
+ */
+using Microsoft.Toolkit.Uwp.Services;
 using flickrSense.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;

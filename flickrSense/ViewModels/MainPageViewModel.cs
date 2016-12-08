@@ -1,3 +1,9 @@
+/*
+ * @file:MainPageViewModel
+ * @brief: ViewModel for Main Page
+ * @author:AA 
+ */
+
 using Template10.Mvvm;
 using System.Collections.Generic;
 using System;
@@ -21,14 +27,24 @@ namespace flickrSense.ViewModels
     {
 
         #region <-PrivateMembers->        
+
         private static int _pageIndex = 1;
+        private NetworkAvailableService _networkAvailableService;
+
         #endregion
 
         #region <-Properties->
+
         string _Value = "Gas";
-        public string Value { get { return _Value; } set { Set(ref _Value, value); } }
+
+        public string Value
+        {
+            get { return _Value; }
+            set { Set(ref _Value, value); }
+        }
 
         private bool _isSearchBoxVisible;
+
         public bool IsSearchBoxVisible
         {
             get { return _isSearchBoxVisible; }
@@ -39,17 +55,20 @@ namespace flickrSense.ViewModels
             }
         }
 
-        private bool _isNetworkAvailable=true;
+        private bool _isNetworkAvailable = true;
+
         public bool IsNetworkAvailable
         {
             get { return _isNetworkAvailable; }
             set
             {
                 _isNetworkAvailable = value;
+                RaisePropertyChanged();
             }
         }
 
         private IncrementalLoadingCollection<Photo> _photoCollection;
+
         public IncrementalLoadingCollection<Photo> PhotoCollection
         {
             get { return _photoCollection; }
@@ -59,9 +78,11 @@ namespace flickrSense.ViewModels
                 RaisePropertyChanged();
             }
         }
+
         #endregion
 
         #region <-Constructor->
+
         public MainPageViewModel()
         {
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
@@ -69,23 +90,56 @@ namespace flickrSense.ViewModels
                 Value = "Designtime value";
             }
 
-            Init();            
+            Init();
         }
+
         #endregion
 
         #region <-Init->
-        private void Init()
+
+        private async void Init()
         {
             try
             {
+                _networkAvailableService = new NetworkAvailableService();
+                _networkAvailableService.AvailabilityChanged += AvailabilityChanged;
+
+                IsNetworkAvailable = await _networkAvailableService.IsInternetAvailable();
+
                 PhotoCollection = new IncrementalLoadingCollection<Photo>((cancellationToken, count)
-                => Task.Run(() => GetFlickrPhotos(new FlickrDataConfig()), cancellationToken));
+                    => Task.Run(() => GetFlickrPhotos(new FlickrDataConfig()), cancellationToken));
             }
             catch (Exception ex)
             {
                 AppLogs.WriteError("[Init]", ex.ToString());
             }
         }
+
+        private async void AvailabilityChanged(ConnectionTypes connectionTypes)
+        {
+            try
+            {
+                var networkAvailabilityStatus = await _networkAvailableService.IsInternetAvailable();
+
+                if (IsNetworkAvailable != networkAvailabilityStatus)
+                {
+                    IsNetworkAvailable = networkAvailabilityStatus;
+
+                    if (IsNetworkAvailable)
+                    {
+                        _pageIndex = 0;
+
+                        PhotoCollection = new IncrementalLoadingCollection<Photo>((cancellationToken, count)
+                        => Task.Run(() => GetFlickrPhotos(new FlickrDataConfig()), cancellationToken));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                AppLogs.WriteError("[AvailabilityChanged]", ex.ToString());
+            }
+        }
+
         #endregion
 
         #region <-Commands->
@@ -111,8 +165,10 @@ namespace flickrSense.ViewModels
             try
             {
                 Photo photo;
-                if (o is ItemClickEventArgs)
-                    photo = ((o as ItemClickEventArgs).ClickedItem) as Photo;
+                var args = o as ItemClickEventArgs;
+
+                if (args != null)
+                    photo = args.ClickedItem as Photo;
                 else
                     photo = o as Photo;
 
@@ -172,20 +228,6 @@ namespace flickrSense.ViewModels
                 {
                     Value = suspensionState[nameof(Value)]?.ToString();
                 }
-
-                var networkService = new NetworkAvailableService();
-                networkService.AvailabilityChanged += async e =>
-                {
-                    if(await networkService.IsInternetAvailable())
-                    {
-                        IsNetworkAvailable = true;
-                    }
-                    else
-                    {
-                        IsNetworkAvailable = false;
-                    }
-                };               
-
                 await Task.CompletedTask;
             }
             catch (Exception ex)
@@ -255,20 +297,24 @@ namespace flickrSense.ViewModels
         {
             try
             {
-                Views.Busy.SetBusy(true, "Loading...");
+                if (IsNetworkAvailable)
+                {
+                    Views.Busy.SetBusy(true, "Loading...");
 
-                var photos = await FlickrService.Instance.RequestAsync(flickrDataConfig,_pageIndex,10);
-                _pageIndex++;
-                return new ObservableCollection<Photo>(photos);
+                    var photos = await FlickrService.Instance.RequestAsync(flickrDataConfig, _pageIndex, 50);
+                    _pageIndex++;
+                    return new ObservableCollection<Photo>(photos);
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                AppLogs.WriteError("[GetFlickrPhotos]", ex.ToString());
             }
             finally
             {
                 Views.Busy.SetBusy(false);
             }
+            return new ObservableCollection<Photo>();
         }
         #endregion
 

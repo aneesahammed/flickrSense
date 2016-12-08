@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿/*
+ * @file:Photos
+ * @brief: Strongly types Flickr Photos object.
+ * @author:AA 
+ */
+using System.Collections.Generic;
 
 namespace flickrSense.Models
 {

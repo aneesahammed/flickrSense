@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿/*
+ * @file:FlickrService
+ * @brief: Class for connecting to Flickr.
+ * @author:AA 
+ */
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using flickrSense.Models;

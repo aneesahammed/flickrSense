@@ -1,21 +1,14 @@
-<Page x:Class="flickrSense.Views.DetailPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:Behaviors="using:Template10.Behaviors"
-      xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
-      xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
-      xmlns:cnv="using:flickrSense.Converters"
-      xmlns:controls="using:Template10.Controls"
-      xmlns:converters="using:Template10.Converters"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:imageControls="using:UwpHelpers.Controls.ImageControls"
-      xmlns:local="using:flickrSense.Views"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:vm="using:flickrSense.ViewModels"
-      x:Name="ThisPage"
-      DataContext="{Binding Source={StaticResource Locator},
-                            Path=DetailPageVm}"
-      mc:Ignorable="d">
+<Page
+    x:Class="flickrSense.Views.DetailPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:Template10.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:imageControls="using:UwpHelpers.Controls.ImageControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="ThisPage"
+    DataContext="{Binding Source={StaticResource Locator}, Path=DetailPageVm}"
+    mc:Ignorable="d">
 
     <Page.Resources>
 
@@ -40,41 +33,43 @@
     </Page.Resources>
 
     <Page.BottomAppBar>
-        <CommandBar HorizontalAlignment="Center"
-                    HorizontalContentAlignment="Center"
-                    IsOpen="{Binding Path=IsLocationInfoAvailable}"
-                    Visibility="{Binding Path=IsLocationInfoAvailable,
-                                         Converter={StaticResource BooleanToVisibilityConverterKey}}">
-            <AppBarButton HorizontalAlignment="Center"
-                          Command="{Binding ShowLocationInfoCommand}"
-                          CommandParameter="{Binding SelectedPhotoIndex}"
-                          Icon="Map"
-                          Label="Map" />
+        <CommandBar
+            HorizontalAlignment="Center"
+            HorizontalContentAlignment="Center"
+            IsOpen="{Binding Path=IsLocationInfoAvailable}"
+            Visibility="{Binding Path=IsLocationInfoAvailable, Converter={StaticResource BooleanToVisibilityConverterKey}}">
+            <AppBarButton
+                HorizontalAlignment="Center"
+                Command="{Binding ShowLocationInfoCommand}"
+                CommandParameter="{Binding SelectedPhotoIndex}"
+                Icon="Map"
+                Label="Map" />
         </CommandBar>
     </Page.BottomAppBar>
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid x:Name="layoutGrid"
-              Margin="12,18,12,12"
-              EntranceNavigationTransitionInfo.IsTargetElement="True"
-              RelativePanel.AlignBottomWithPanel="True"
-              RelativePanel.AlignLeftWithPanel="True"
-              RelativePanel.AlignRightWithPanel="True"
-              RelativePanel.AlignTopWithPanel="True">
+        <Grid
+            x:Name="layoutGrid"
+            Margin="12,18,12,12"
+            EntranceNavigationTransitionInfo.IsTargetElement="True"
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.AlignRightWithPanel="True"
+            RelativePanel.AlignTopWithPanel="True">
 
-            <Pivot x:Name="GalleryPivot"
-                   ItemsSource="{Binding PhotoCollection}"
-                   SelectedIndex="{Binding Path=SelectedPhotoIndex,
-                                           Mode=TwoWay,
-                                           UpdateSourceTrigger=PropertyChanged}">
+            <Pivot
+                x:Name="GalleryPivot"
+                ItemsSource="{Binding PhotoCollection}"
+                SelectedIndex="{Binding Path=SelectedPhotoIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <Pivot.HeaderTemplate>
                     <DataTemplate>
-                        <TextBlock MinWidth="40"
-                                   MaxWidth="150"
-                                   Canvas.ZIndex="1"
-                                   Text="{Binding Title}"
-                                   TextTrimming="CharacterEllipsis"
-                                   TextWrapping="NoWrap" />
+                        <TextBlock
+                            MinWidth="40"
+                            MaxWidth="150"
+                            Canvas.ZIndex="1"
+                            Text="{Binding Title}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap" />
                     </DataTemplate>
                 </Pivot.HeaderTemplate>
 
@@ -82,12 +77,13 @@
                     <DataTemplate>
                         <Grid>
 
-                            <imageControls:NetworkImage x:Name="mediumThumbnail"
-                                                        Margin="0,12,0,0"
-                                                        HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center"
-                                                        ImageStretch="Uniform"
-                                                        ImageUrl="{Binding MediumPath}" />
+                            <imageControls:NetworkImage
+                                x:Name="mediumThumbnail"
+                                Margin="0,12,0,0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                ImageStretch="Uniform"
+                                ImageUrl="{Binding MediumThumbnailSizePath}" />
 
                         </Grid>
                     </DataTemplate>
