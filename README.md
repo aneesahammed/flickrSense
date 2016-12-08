@@ -1,2 +1,2 @@
 # flickrSense
-Simpel flickr client (Universal App)
+Simple flickr client (Universal App)
