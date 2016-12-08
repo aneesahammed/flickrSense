@@ -61,12 +61,19 @@
                 x:Name="GalleryPivot"
                 ItemsSource="{Binding PhotoCollection}"
                 SelectedIndex="{Binding Path=SelectedPhotoIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
                 <Pivot.HeaderTemplate>
                     <DataTemplate>
                         <TextBlock
-                            MinWidth="40"
+                            x:Name="headerText"
                             MaxWidth="150"
-                            Canvas.ZIndex="1"
+                            MaxHeight="30"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Canvas.ZIndex="2"
+                            LineHeight="30"
+                            LineStackingStrategy="BlockLineHeight"
+                            MaxLines="1"
                             Text="{Binding Title}"
                             TextTrimming="CharacterEllipsis"
                             TextWrapping="NoWrap" />
