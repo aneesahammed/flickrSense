@@ -6,8 +6,11 @@
  * @credit: MVVMLight
  */
 
+using System;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
+using Windows.ApplicationModel.Resources;
+using flickrSense.Common.Storage;
 
 namespace flickrSense.ViewModels
 {
@@ -15,17 +18,26 @@ namespace flickrSense.ViewModels
     {
         static ViewModelLocator()
         {
-            ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
-
-            if (GalaSoft.MvvmLight.ViewModelBase.IsInDesignModeStatic)
+            try
             {
-                // We are at design time.
-                //SimpleIoc.Default.Register<IDataService, DesignTimeDataService>();
-            }          
+                ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-            SimpleIoc.Default.Register<MainPageViewModel>();
-            SimpleIoc.Default.Register<DetailPageViewModel>();
-            SimpleIoc.Default.Register<MapControlPageViewModel>();
+                if (GalaSoft.MvvmLight.ViewModelBase.IsInDesignModeStatic)
+                {
+                    // We are at design time.
+                    //SimpleIoc.Default.Register<IDataService, DesignTimeDataService>();
+                }
+
+                SimpleIoc.Default.Register<ResourceLoader>(()=> new ResourceLoader());
+
+                SimpleIoc.Default.Register<MainPageViewModel>();
+                SimpleIoc.Default.Register<DetailPageViewModel>();
+                SimpleIoc.Default.Register<MapControlPageViewModel>();
+            }
+            catch (Exception ex)
+            {
+                AppLogs.WriteError("[ViewModelLocator]", ex.ToString());
+            }
         }
 
 
@@ -45,6 +57,11 @@ namespace flickrSense.ViewModels
         public MapControlPageViewModel MapControlPageVm
         {
             get { return ServiceLocator.Current.GetInstance<MapControlPageViewModel>(); }
+        }
+
+        public static ResourceLoader ResLoader
+        {
+            get { return ServiceLocator.Current.GetInstance<ResourceLoader>(); }
         }
     }
 }

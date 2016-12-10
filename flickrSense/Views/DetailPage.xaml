@@ -39,6 +39,7 @@
             IsOpen="{Binding Path=IsLocationInfoAvailable}"
             Visibility="{Binding Path=IsLocationInfoAvailable, Converter={StaticResource BooleanToVisibilityConverterKey}}">
             <AppBarButton
+                x:Uid="mapBtn"
                 HorizontalAlignment="Center"
                 Command="{Binding ShowLocationInfoCommand}"
                 CommandParameter="{Binding SelectedPhotoIndex}"

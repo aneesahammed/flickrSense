@@ -55,6 +55,7 @@
         <CommandBar>
             <AppBarButton
                 Name="Search"
+                x:Uid="searchBtn"
                 Command="{Binding Path=ToggleSearchBoxVisibilityCommand}"
                 Icon="Find"
                 Label="Search"

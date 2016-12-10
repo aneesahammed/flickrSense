@@ -299,7 +299,7 @@ namespace flickrSense.ViewModels
             {
                 if (IsNetworkAvailable)
                 {
-                    Views.Busy.SetBusy(true, "Loading...");
+                    Views.Busy.SetBusy(true, ViewModelLocator.ResLoader.GetString("Loading"));
 
                     var photos = await FlickrService.Instance.RequestAsync(flickrDataConfig, _pageIndex, 50);
                     _pageIndex++;
